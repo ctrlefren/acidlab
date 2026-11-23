@@ -127,4 +127,4 @@ MAILERS = {
     },
 }
 
-PH_CRITICO = 6.0  # por debajo de este pH se dispara la alerta
+PH_CRITICO = 7.8  # por debajo de este pH se dispara la alerta

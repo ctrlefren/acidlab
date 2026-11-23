@@ -5,9 +5,8 @@ from django.urls import reverse
 
 
 def formula(ph):
-    """Índice de acidez relativo al agua neutra: 10^(7 - pH)."""
-    return round(10 ** (7 - ph), 4)
-
+    """CO2 (µatm) = 630 + (8 - pH) * 1000"""
+    return round(630 + (8 - ph) * 1000, 2)
 
 PH_VALIDOS = [MinValueValidator(0), MaxValueValidator(14)]
 
@@ -37,3 +36,5 @@ class RegistroAcidificacion(models.Model):
 
     def get_absolute_url(self):
         return reverse("detalle", args=[self.pk]9)
+
+    @    
