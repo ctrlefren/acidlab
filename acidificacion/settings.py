@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/6.1/ref/settings/
 """
 
 from pathlib import Path
+from django.contrib.messages import constants as m
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -55,7 +56,7 @@ ROOT_URLCONF = 'acidificacion.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR/ "templantes"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -128,3 +129,8 @@ MAILERS = {
 }
 
 PH_CRITICO = 7.8  # por debajo de este pH se dispara la alerta
+
+LOGIN_URL = "login"
+LOGIN_REDIRECT_URL = "lista"
+LOGOUT_REDIRECT_URL = "lista"
+MESSAGE_TAGS = {m.ERROR: "danger"}
