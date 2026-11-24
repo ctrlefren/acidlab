@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Registros{% endblock %}
+{% block content %}
+<h1 class="fw-bold mb-1">Monitoreo de <span class="text-info">acidificación del agua</span></h1>
+<p class="text-secondary">Registros de pH y su cálculo de CO₂ (µatm).</p>
+
+<form method="get" class="glass p-3 mb-4 d-flex gap-2">
+  <input name="q" value="{{ q }}" class="form-control" placeholder="Buscar por equipo o fecha (AAAA-MM-DD)">
+  <button class="btn btn-info"><i class="bi bi-search"></i></button>
+  {% if q %}<a href="{% url 'lista' %}" class="btn btn-outline-light">Limpiar</a>{% endif %}
+</form>
+
+<div class="glass p-2 table-responsive">
+  <table class="table table-hover align-middle mb-0">
+    <thead>
+      <tr><th>Equipo</th><th>Fecha</th><th>pH 1</th><th>pH 2</th><th>pH 3</th><th>pH 4</th><th></th></tr>
+    </thead>
+    <tbody>
+    {% for r in object_list %}
+      <tr>
+        <td class="fw-semibold">{{ r.equipo }}</td>
+        <td>{{ r.fecha|date:"d/m/Y H:i" }}</td>
+        <td>{{ r.ph1 }}</td><td>{{ r.ph2 }}</td><td>{{ r.ph3 }}</td><td>{{ r.ph4 }}</td>
+        <td class="text-end text-nowrap">
+          <a class="btn btn-sm btn-outline-info" href="{{ r.get_absolute_url }}"><i class="bi bi-graph-up"></i></a>
+          {% if user.is_authenticated %}
+            <a class="btn btn-sm btn-outline-warning" href="{% url 'editar' r.pk %}"><i class="bi bi-pencil"></i></a>
+            <a class="btn btn-sm btn-outline-danger" href="{% url 'eliminar' r.pk %}"><i class="bi bi-trash"></i></a>
+          {% endif %}
+        </td>
+      </tr>
+    {% empty %}
+      <tr><td colspan="7" class="text-center text-secondary py-4">Sin registros todavía.</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% if is_paginated %}
+<nav class="mt-4">
+  <ul class="pagination justify-content-center">
+    {% if page_obj.has_previous %}
+      <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}&q={{ q }}">«</a></li>
+    {% endif %}
+    {% for n in paginator.page_range %}
+      <li class="page-item {% if n == page_obj.number %}active{% endif %}">
+        <a class="page-link" href="?page={{ n }}&q={{ q }}">{{ n }}</a>
+      </li>
+    {% endfor %}
+    {% if page_obj.has_next %}
+      <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}&q={{ q }}">»</a></li>
+    {% endif %}
+  </ul>
+</nav>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}{% if object %}Editar{% else %}Nueva medición{% endif %}{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-7">
+    <div class="glass p-4">
+      <h3 class="mb-4">{% if object %}Editar{% else %}Nueva{% endif %} medición</h3>
+      <form method="post">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        <div class="mb-3">
+          <label class="form-label">{{ form.equipo.label }}</label>
+          {{ form.equipo }}
+          <div class="text-danger small">{{ form.equipo.errors|join:" " }}</div>
+        </div>
+        <div class="row g-3 mb-3">
+          {% for f in form %}
+            {% if f.name|slice:":2" == "ph" %}
+              <div class="col-6">
+                <label class="form-label">{{ f.label }}</label>
+                {{ f }}
+                <div class="text-danger small">{{ f.errors|join:" " }}</div>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+        <div class="mb-4">
+          <label class="form-label">{{ form.leyenda.label }}</label>
+          {{ form.leyenda }}
+          <div class="text-danger small">{{ form.leyenda.errors|join:" " }}</div>
+        </div>
+        <button class="btn btn-info"><i class="bi bi-calculator"></i> Guardar y calcular</button>
+        <a href="{% url 'lista' %}" class="btn btn-outline-light">Cancelar</a>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
